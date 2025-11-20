@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/Gottard-capricorn/Dashboard-Otus.git"
   },
+  "lint-staged": {
+    "*.{css,js,html,yml,md}": "npm run format:fix"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
