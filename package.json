@@ -13,9 +13,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Gottard-capricorn/Dashboard-Otus/issues"
   },
-  "homepage": "https://github.com/Gottard-capricorn/Dashboard-Otus#readme"
+  "homepage": "https://github.com/Gottard-capricorn/Dashboard-Otus#readme",
+  "dependencies": {
+    "firebase": "^12.6.0"
+  }
 }
