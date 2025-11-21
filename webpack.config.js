@@ -1,5 +1,4 @@
 import path from "path";
-import webpack from "webpack";
 import { fileURLToPath } from "url";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
@@ -17,4 +16,21 @@ export default {
   },
 
   plugins: [new HtmlWebpackPlugin({ template: "./src/dashBoard.html" })],
+
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "public"),
+    },
+
+    compress: true,
+
+    port: 9000,
+
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
+  },
 };

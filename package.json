@@ -10,7 +10,8 @@
     "prepare": "husky",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "build-webpack": "webpack --config webpack.config.js"
+    "build-webpack": "webpack --config webpack.config.js",
+    "start": "webpack serve --open" 
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.6.2",
     "webpack": "^5.103.0",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   }
 }
