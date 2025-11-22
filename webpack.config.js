@@ -16,7 +16,7 @@ export default {
 
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "main.js",
+    filename: "main.[fullhash].js",
     publicPath: isLocalRun ? PREFIX : "/",
   },
 

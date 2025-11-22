@@ -7,14 +7,12 @@
 export function createNuvAuth() {
   const nav = document.createElement("nav");
   nav.style.cssText = "display:flex;justify-content:space-around";
-  [{ href: process.env.PREFIX + "/", text: "auth" }].forEach(
-    ({ href, text }) => {
-      const link = document.createElement("a");
-      link.href = href;
-      link.textContent = text;
-      nav.appendChild(link);
-    },
-  );
+  [{ href: PREFIX + "", text: "auth" }].forEach(({ href, text }) => {
+    const link = document.createElement("a");
+    link.href = href;
+    link.textContent = text;
+    nav.appendChild(link);
+  });
 
   return nav;
 }
@@ -23,8 +21,8 @@ export function createNuvDashboard() {
   const nav = document.createElement("nav");
   nav.style.cssText = "display:flex;justify-content:space-around";
   [
-    { href: process.env.PREFIX + "/dashBoard", text: "dashBoard" },
-    { href: process.env.PREFIX + "/about", text: "about" },
+    { href: PREFIX + "dashBoard", text: "dashBoard" },
+    { href: PREFIX + "about", text: "about" },
   ].forEach(({ href, text }) => {
     const link = document.createElement("a");
     link.href = href;

@@ -86,22 +86,23 @@ function renderAbout() {
 }
 
 function bindNavigationHandlers() {
-  document.querySelectorAll("nav a").forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const href = link.getAttribute("href");
+  document.body.addEventListener("click", (e) => {
+    if (!e.target.matches("a")) {
+      return;
+    }
+    e.preventDefault();
+    const href = e.target.getAttribute("href");
 
-      if (href === process.env.PREFIX + "/about" && currentUser) {
-        renderAbout();
-      } else if (href === process.env.PREFIX + "/dashBoard" && currentUser) {
-        renderDashboard(firebaseModelInstance);
-      } else if (href === process.env.PREFIX + "/" && !currentUser) {
-        authPageRender();
-        bindAuthHandlers(firebaseModelInstance);
-      } else {
-        alert("Fix me in routing handler");
-      }
-    });
+    if (href === PREFIX + "about" && currentUser) {
+      renderAbout();
+    } else if (href === PREFIX + "dashBoard" && currentUser) {
+      renderDashboard(firebaseModelInstance);
+    } else if (href === PREFIX + "" && !currentUser) {
+      authPageRender();
+      bindAuthHandlers(firebaseModelInstance);
+    } else {
+      alert("Fix me in routing handler");
+    }
   });
 }
 
