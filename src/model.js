@@ -20,7 +20,7 @@ import {
 
 const firebaseConfig = {
   //Добавить в переменные окружения
-  apiKey: "AIzaSyCB1UafNIhuOb7qWbx1401U1KFDQ4tJ2rU",
+  apiKey: APIKEY,
 
   authDomain: "otusdashboard.firebaseapp.com",
 
@@ -28,7 +28,7 @@ const firebaseConfig = {
 
   storageBucket: "otusdashboard.firebasestorage.app",
 
-  messagingSenderId: "907942800962",
+  messagingSenderId: SENDERID,
 
   appId: "1:907942800962:web:4b8f8451f2b87fc0f3c7db",
 

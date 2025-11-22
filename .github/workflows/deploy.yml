@@ -17,6 +17,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+          SENDERID: ${{ secrets.SENDERID }}
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
