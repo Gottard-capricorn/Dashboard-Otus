@@ -29,6 +29,6 @@ export default {
   globals: {
     PREFIX: "",
     APIKEY: "test",
-    SENDERID: "test"
+    SENDERID: "test",
   },
 };
