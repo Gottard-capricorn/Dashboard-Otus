@@ -3,12 +3,16 @@
 import {
   authPageRender,
   dashBoardPageRender,
+  aboutPageRender,
   ensureBaseMarkup,
+  showAlert,
 } from "./view.js";
 import { FirebaseModel } from "./model.js";
+import "./style.css";
 
 let filesState = [];
 let currentUser = null;
+let firebaseModelInstance = null;
 
 async function handleFileSelect(firebaseModel, event) {
   const file = event.target.files && event.target.files[0];
@@ -59,36 +63,113 @@ function bindDashboardHandlers(firebaseModel) {
   });
 }
 
-function renderDashboard(firebaseModel) {
-  dashBoardPageRender(filesState);
-  bindDashboardHandlers(firebaseModel);
-}
-
-function bindAuthHandlers(firebaseModel) {
-  const loginButton = document.querySelector("button");
-  if (!loginButton) return;
-
-  loginButton.addEventListener("click", async () => {
-    const inputs = document.querySelectorAll("input");
-    const email = inputs[0].value;
-    const password = inputs[1].value;
-
+const logoutBtn = document.querySelector("#logout-btn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
     try {
-      await firebaseModel.signIn(email, password);
-      // дальнейший рендер произойдет в observeAuthState
+      await firebaseModel.signOut();
     } catch (error) {
-      console.error("Auth failed", error);
+      console.error("Logout failed", error);
     }
   });
 }
 
+function renderDashboard(firebaseModel) {
+  dashBoardPageRender(filesState);
+  bindDashboardHandlers(firebaseModel);
+}
+bindNavigationHandlers();
+
+function renderAbout() {
+  aboutPageRender();
+  bindNavigationHandlers();
+}
+
+function bindNavigationHandlers() {
+  document.querySelectorAll("nav a").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = link.getAttribute("href");
+
+      if (href === "/about" && currentUser) {
+        renderAbout();
+      } else if (href === "/dashBoard" && currentUser) {
+        renderDashboard(firebaseModelInstance);
+      } else if (href === "/" && !currentUser) {
+        authPageRender();
+        bindAuthHandlers(firebaseModelInstance);
+      }
+    });
+  });
+}
+
 export function runApp(firebaseModel = new FirebaseModel()) {
+  async function loadFiles(firebaseModel) {
+    if (!currentUser) return;
+    try {
+      filesState = await firebaseModel.listFilesWithMetadata(
+        `files/${currentUser.uid}`,
+      );
+    } catch (error) {
+      console.error("Load files failed", error);
+      filesState = [];
+    }
+  }
+
+  function bindAuthHandlers(firebaseModel) {
+    const loginButton = document.querySelector("#login-btn");
+    const signUpButton = document.querySelector("#signup-btn");
+    if (loginButton) {
+      loginButton.addEventListener("click", async () => {
+        const inputs = document.querySelectorAll("input");
+        const email = inputs[0].value;
+        const password = inputs[1].value;
+
+        try {
+          await firebaseModel.signIn(email, password);
+          // дальнейший рендер произойдет в observeAuthState
+        } catch (error) {
+          console.error("Auth failed", error);
+          if (error?.code === "auth/invalid-credential") {
+            showAlert("Логин или пароль не верные");
+          } else {
+            showAlert("Не удалось войти");
+          }
+        }
+      });
+    }
+
+    if (signUpButton) {
+      signUpButton.addEventListener("click", async () => {
+        const inputs = document.querySelectorAll("input");
+        const email = inputs[0].value;
+        const password = inputs[1].value;
+
+        try {
+          await firebaseModel.signUp(email, password);
+          // после регистрации onAuthStateChanged получит user и переключит UI
+        } catch (error) {
+          console.error("Sign up failed", error);
+          if (error?.code === "auth/email-already-in-use") {
+            showAlert("Такой пользователь уже зарегистрирован");
+          } else if (error?.code === "auth/invalid-credential") {
+            showAlert("Логин или пароль не верные");
+          } else {
+            showAlert("Не удалось зарегистрироваться");
+          }
+        }
+      });
+    }
+  }
+
   ensureBaseMarkup(); //Без этого будет работать?
 
-  const unsubscribe = firebaseModel.observeAuthState((user) => {
+  firebaseModelInstance = firebaseModel;
+  const unsubscribe = firebaseModel.observeAuthState(async (user) => {
     currentUser = user;
     if (user) {
       renderDashboard(firebaseModel);
+      await loadFiles(firebaseModel);
     } else {
       filesState = [];
       authPageRender();
