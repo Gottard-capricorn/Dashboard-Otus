@@ -2,9 +2,7 @@ name: Build & Test on Pull Request
 on: pull_request
 
 jobs:
-  sanity-check-and-deploy:
-    permissions:
-      contents: write
+  sanity-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,8 +13,4 @@ jobs:
       - run: npm ci
       - run: npm run format:fix
       - run: npm test
-      - run: npm run build --if-present
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - run: npm run build
