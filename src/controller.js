@@ -10,6 +10,8 @@ import {
 import { FirebaseModel } from "./model.js";
 import "./style.css";
 
+const PREFIX = "";
+
 let filesState = [];
 let currentUser = null;
 let firebaseModelInstance = null;
@@ -74,6 +76,52 @@ function bindDashboardHandlers(firebaseModel) {
   }
 }
 
+function bindAuthHandlers(firebaseModel) {
+  const loginButton = document.querySelector("#login-btn");
+  const signUpButton = document.querySelector("#signup-btn");
+  if (loginButton) {
+    loginButton.addEventListener("click", async () => {
+      const inputs = document.querySelectorAll("input");
+      const email = inputs[0].value;
+      const password = inputs[1].value;
+
+      try {
+        await firebaseModel.signIn(email, password);
+        // дальнейший рендер произойдет в observeAuthState
+      } catch (error) {
+        console.error("Auth failed", error);
+        if (error?.code === "auth/invalid-credential") {
+          showAlert("Логин или пароль не верные");
+        } else {
+          showAlert("Не удалось войти");
+        }
+      }
+    });
+  }
+
+  if (signUpButton) {
+    signUpButton.addEventListener("click", async () => {
+      const inputs = document.querySelectorAll("input");
+      const email = inputs[0].value;
+      const password = inputs[1].value;
+
+      try {
+        await firebaseModel.signUp(email, password);
+        // после регистрации onAuthStateChanged получит user и переключит UI
+      } catch (error) {
+        console.error("Sign up failed", error);
+        if (error?.code === "auth/email-already-in-use") {
+          showAlert("Такой пользователь уже зарегистрирован");
+        } else if (error?.code === "auth/invalid-credential") {
+          showAlert("Логин или пароль не верные");
+        } else {
+          showAlert("Не удалось зарегистрироваться");
+        }
+      }
+    });
+  }
+}
+
 function renderDashboard(firebaseModel) {
   dashBoardPageRender(filesState);
   bindDashboardHandlers(firebaseModel);
@@ -114,55 +162,10 @@ export function runApp(firebaseModel = new FirebaseModel()) {
         `files/${currentUser.uid}`,
       );
       dashBoardPageRender(filesState);
+      bindDashboardHandlers(firebaseModel);
     } catch (error) {
       console.error("Load files failed", error);
       filesState = [];
-    }
-  }
-
-  function bindAuthHandlers(firebaseModel) {
-    const loginButton = document.querySelector("#login-btn");
-    const signUpButton = document.querySelector("#signup-btn");
-    if (loginButton) {
-      loginButton.addEventListener("click", async () => {
-        const inputs = document.querySelectorAll("input");
-        const email = inputs[0].value;
-        const password = inputs[1].value;
-
-        try {
-          await firebaseModel.signIn(email, password);
-          // дальнейший рендер произойдет в observeAuthState
-        } catch (error) {
-          console.error("Auth failed", error);
-          if (error?.code === "auth/invalid-credential") {
-            showAlert("Логин или пароль не верные");
-          } else {
-            showAlert("Не удалось войти");
-          }
-        }
-      });
-    }
-
-    if (signUpButton) {
-      signUpButton.addEventListener("click", async () => {
-        const inputs = document.querySelectorAll("input");
-        const email = inputs[0].value;
-        const password = inputs[1].value;
-
-        try {
-          await firebaseModel.signUp(email, password);
-          // после регистрации onAuthStateChanged получит user и переключит UI
-        } catch (error) {
-          console.error("Sign up failed", error);
-          if (error?.code === "auth/email-already-in-use") {
-            showAlert("Такой пользователь уже зарегистрирован");
-          } else if (error?.code === "auth/invalid-credential") {
-            showAlert("Логин или пароль не верные");
-          } else {
-            showAlert("Не удалось зарегистрироваться");
-          }
-        }
-      });
     }
   }
 
