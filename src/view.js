@@ -21,8 +21,8 @@ export function createNuvDashboard() {
   const nav = document.createElement("nav");
   nav.style.cssText = "display:flex;justify-content:space-around";
   [
-    { href: "/dashBoard", text: "dashBoard" },
-    { href: "/about", text: "about" },
+    { href: process.env.PREFIX + "/dashBoard", text: "dashBoard" },
+    { href: process.env.PREFIX + "/about", text: "about" },
   ].forEach(({ href, text }) => {
     const link = document.createElement("a");
     link.href = href;
