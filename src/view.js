@@ -4,6 +4,8 @@
 //DashBoardPageRender - если прошли регистрацию, то подтягиваем данные из firebase
 //InfoPageRender - Если перешли по гиперссылке на DashBoard
 
+const PREFIX = "";
+
 export function createNuvAuth() {
   const nav = document.createElement("nav");
   nav.style.cssText = "display:flex;justify-content:space-around";
@@ -106,6 +108,15 @@ export function authPageRender() {
   if (oldLogout) oldLogout.remove();
   const oldAlert = document.querySelector(".alert");
   if (oldAlert) oldAlert.remove();
+  const oldAbout = document.querySelector("#about-content");
+  if (oldAbout) oldAbout.remove();
+
+  // Удаляем старые элементы авторизации
+  document.querySelectorAll("input").forEach((el) => el.remove());
+  const oldLoginBtn = document.querySelector("#login-btn");
+  if (oldLoginBtn) oldLoginBtn.remove();
+  const oldSignUpBtn = document.querySelector("#signup-btn");
+  if (oldSignUpBtn) oldSignUpBtn.remove();
 
   document.body.append(document.createElement("input")); //Добавить внутреннюю надпись логин и пространство между элементами
   document.body.append(document.createElement("input")); //Добавить внутренню надпись пароль и пространство между элементами
