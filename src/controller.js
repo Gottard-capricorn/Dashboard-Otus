@@ -61,17 +61,17 @@ function bindDashboardHandlers(firebaseModel) {
       }
     });
   });
-}
 
-const logoutBtn = document.querySelector("#logout-btn");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", async () => {
-    try {
-      await firebaseModel.signOut();
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  });
+  const logoutBtn = document.querySelector("#logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await firebaseModel.signOut();
+      } catch (error) {
+        console.error("Logout failed", error);
+      }
+    });
+  }
 }
 
 function renderDashboard(firebaseModel) {
