@@ -114,6 +114,7 @@ export function runApp(firebaseModel = new FirebaseModel()) {
         `files/${currentUser.uid}`,
       );
       dashBoardPageRender(filesState);
+      bindDashboardHandlers(firebaseModel);
     } catch (error) {
       console.error("Load files failed", error);
       filesState = [];
