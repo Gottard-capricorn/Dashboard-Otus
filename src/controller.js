@@ -113,6 +113,7 @@ export function runApp(firebaseModel = new FirebaseModel()) {
       filesState = await firebaseModel.listFilesWithMetadata(
         `files/${currentUser.uid}`,
       );
+      dashBoardPageRender(filesState);
     } catch (error) {
       console.error("Load files failed", error);
       filesState = [];
