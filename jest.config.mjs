@@ -27,6 +27,6 @@ export default {
   },
 
   globals: {
-    PREFIX: ''
+    PREFIX: "",
   },
 };
