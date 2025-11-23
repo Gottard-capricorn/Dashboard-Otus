@@ -42,6 +42,7 @@ export const app = initializeApp(firebaseConfig);
 
 export class FirebaseModel {
   constructor() {
+    console.log("APIKEY: ", APIKEY);
     this.auth = getAuth(app);
     this.storage = getStorage(app);
   }
