@@ -38,8 +38,8 @@ export default {
     new webpack.DefinePlugin({
       PRODUCTION: JSON.stringify(isLocalRun),
       PREFIX: JSON.stringify(PREFIX),
-      APIKEY: JSON.stringify(process.env.APIKEY),
-      SENDERID: JSON.stringify(process.env.SENDERID),
+      'APIKEY': JSON.stringify(process.env.APIKEY),
+      'SENDERID': JSON.stringify(process.env.SENDERID),
     }),
   ],
 
