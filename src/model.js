@@ -20,7 +20,7 @@ import {
 
 const firebaseConfig = {
   //Добавить в переменные окружения
-  apiKey: APIKEY,
+  apiKey: process.env.APIKEY,
 
   authDomain: "otusdashboard.firebaseapp.com",
 
@@ -28,7 +28,7 @@ const firebaseConfig = {
 
   storageBucket: "otusdashboard.firebasestorage.app",
 
-  messagingSenderId: SENDERID,
+  messagingSenderId: process.env.SENDERID,
 
   appId: "1:907942800962:web:4b8f8451f2b87fc0f3c7db",
 
@@ -42,7 +42,7 @@ export const app = initializeApp(firebaseConfig);
 
 export class FirebaseModel {
   constructor() {
-    console.log("APIKEY: ", APIKEY);
+    console.log("APIKEY: ", process.env.APIKEY);
     this.auth = getAuth(app);
     this.storage = getStorage(app);
   }
