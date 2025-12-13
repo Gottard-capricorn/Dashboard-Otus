@@ -1,0 +1,26 @@
+name: Secrets and Environment Variables
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+          SENDERID: ${{ secrets.SENDERID }}
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
