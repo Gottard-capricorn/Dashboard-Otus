@@ -8,6 +8,11 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
+      - shell: bash
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+        run: |
+          example-command "$APIKEY"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
