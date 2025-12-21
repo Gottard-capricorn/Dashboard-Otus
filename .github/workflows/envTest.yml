@@ -4,6 +4,8 @@ on: workflow_dispatch
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -11,8 +13,7 @@ jobs:
       - shell: bash
         env:
           APIKEY: ${{ secrets.APIKEY }}
-        run: |
-          echo "$APIKEY"
+        run: echo "$APIKEY"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
