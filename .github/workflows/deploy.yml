@@ -5,6 +5,8 @@ on:
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
     permissions:
       contents: write
     runs-on: ubuntu-latest
